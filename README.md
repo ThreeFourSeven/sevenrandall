@@ -3,8 +3,10 @@ All you need to get started is a version of python with pip on your machine. Any
 
 ## Part 1
 First step is to open a terminal and type.
-    - pip install pygame
-tutorial contents...
+
+> pip install pygame
+
+...contents...
 
 ## Part 2
 ...contents...
