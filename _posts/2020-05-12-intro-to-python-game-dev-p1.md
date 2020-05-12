@@ -186,8 +186,10 @@ In order to have the above information we gather the events from pygame every fr
 ```python
 # Game.poll_input()
 def poll_input(self):
-  # Iterates over each event gathered from pygame
+  # pygame.event.get() gets all the thrown events
+  # Note: only iterate over pygame.event.get() in one place to prevent unpredictable results 
   for event in pygame.event.get():
+    # pygame.QUIT is display exit button
     if event.type == pygame.QUIT:
       self.running = False
     elif event.type == pygame.KEYDOWN:
