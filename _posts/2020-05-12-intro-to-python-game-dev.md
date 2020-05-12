@@ -58,7 +58,7 @@ Finally depth is the number of bits to use per color.
 ```python
 def create_display(width, height, title="pygame-display"):
   pygame.display.init()
-  display = pygame.display.set_mode((width, height), 0, depth)
+  display = pygame.display.set_mode((width, height), 0, 32)
   pygame.display.set_caption(title)
   return display
 ```
