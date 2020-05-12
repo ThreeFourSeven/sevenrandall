@@ -3,12 +3,9 @@
 
 @import "{{ site.theme }}";
 
-.navbar {
-    display: inline-block;
+.hlist {
     list-style: none;
-}
-
-.foot {
-    display: inline-block;
-    list-style: none;
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
 }
