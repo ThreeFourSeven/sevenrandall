@@ -6,7 +6,7 @@ date: 2020-05-12
 
 ## Intro to Python Game Dev with Pygame Part 1
 
-This tutorial assumes that you are familiar with python, and have [PyCharm](https://www.jetbrains.com/pycharm/) already installed.
+This tutorial assumes that you are familiar with python, and have [PyCharm](https://www.jetbrains.com/pycharm/) already installed. This part the following parts will cover the following.
 
 - Setting up pygame.
 - Using pygame to create a display.
