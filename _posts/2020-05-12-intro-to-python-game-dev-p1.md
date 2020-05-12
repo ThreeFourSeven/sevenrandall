@@ -42,7 +42,7 @@ Will contain operations that can be performed once, or before game launch. Some 
 
 > poll_input()
 
-Will get the current keyboard and mouse events from the window.
+Will get the current keyboard and mouse events from the display.
 
 > update()
 
@@ -63,6 +63,8 @@ Will contain all pygame draw operations.
 > swap_frame()
 
 Will Swap the old frame for the current frame.
+
+---
 
 So from this our display will need to.
 
@@ -107,8 +109,14 @@ If you call this nothing will happen, and thats because the display is created f
 class Game:
   def __init__(self):
     self.running = True
-    self.keys = {}
-    self.buttons = {}
+    self.keys_clicked = {}
+    self.buttons_clicked = {}
+    self.keys_down = []
+    self.buttons_down = []
+    self.key_mods = 0
+    self.mouse_position = [0, 0]
+    self.previous_mouse_position = [0, 0]
+    self.mouse_velocity = [0, 0]
     self.display = None
 
   def init(self, width=1600, height=900):
@@ -143,24 +151,40 @@ class Game:
       self.swap_frame()
 ```
 
-These dictionarys will be filled with pressed keys and buttons and then cleared after use.
+These will store all input events coming from our display. 
 
 ```python
-self.keys = {}
-self.buttons = {}
+self.keys_clicked = {}
+self.buttons_clicked = {}
+self.keys_down = []
+self.buttons_down = []
+self.key_mods = 0
+self.mouse_position = [0, 0]
+self.previous_mouse_position = [0, 0]
+self.mouse_velocity = [0, 0]
 ```
 
 Example usage.
 
 ```python
-if self.keys[pygame.K_SPACE]:
-  print("Pressed the space bar!")
+#Game.update()
+def update(self):
+  if pygame.K_SPACE in self.keys_clicked and self.keys_clicked[pygame.K_SPACE]:
+    print("Clicked the space bar!")
 
-if self.buttons[0] and self.buttons[2]:
-  print("Pressed the left and right mouse button!")
+  if self.buttons_down[0] and self.buttons_down[2]:
+    print("The left and right mouse button are held down!")
+
+  if 0 in self.buttons_clicked and self.buttons_clicked[0]:
+      print("The left mouse button was clicked!")
+
+  if self.keys_down[pygame.K_SPACE] and self.key_mods & pygame.KMOD_SHIFT:
+    print("The space bar and shift are held down!")
+
+  print("The mouse is located at", self.mouse_position, "with a velocity of", self.mouse_velocity)
 ```
 
-To store the key and button events from pygame.
+In order to have the above information we gather the events from pygame every frame.
 
 ```python
 # Game.poll_input()
@@ -169,24 +193,43 @@ def poll_input(self):
     if event.type == pygame.QUIT:
       self.running = False
     elif event.type == pygame.KEYDOWN:
-      self.keys[event.key] = True
+      self.keys_clicked[event.key] = True
     elif event.type == pygame.MOUSEBUTTONDOWN:
-      self.buttons[event.button] = True
+      self.buttons_clicked[event.button-1] = True
+
+  self.keys_down = pygame.key.get_pressed()
+  self.buttons_down = pygame.mouse.get_pressed()
+  self.key_mods = pygame.key.get_mods()
+
+  tuple_mouse_pos = pygame.mouse.get_pos()
+  self.mouse_position[0] = tuple_mouse_pos[0]
+  self.mouse_position[1] = tuple_mouse_pos[1]
+
+  if self.previous_mouse_position[0] != self.mouse_position[0] and self.previous_mouse_position[1] != self.mouse_position[1]:
+    self.mouse_velocity[0] = self.mouse_position[0] - self.previous_mouse_position[0]
+    self.mouse_velocity[1] = self.mouse_position[1] - self.previous_mouse_position[1]
+    self.previous_mouse_position = self.mouse_position.copy()
 ```
 
-Clearing the stored events.
+You may be confused why there is a -1, well for some reason event.button returns a value from 1 to 3, while pygame.mouse.get_pressed() returns a value from 0 to 2. 
+
+```python
+self.buttons_clicked[event.button-1] = True
+```
+
+To clear the stored events we only need to clear the dictionaries as the lists are reset every frame.
 
 ```python
 #Game.clear_input()
 def clear_input(self):
-  self.keys.clear()
-  self.buttons.clear()
+  self.keys_clicked.clear()
+  self.buttons_clicked.clear()
 ```
 
-Now have the display opening and responding to input events with. 
+Now we have the display opening and responding to input events with. 
 
 ```python
 Game().run()
 ```
 
-Next time well cover how to render objects to the screen, and detect when objects are colliding. 
+Next part will cover how to render objects to the screen, and detect when objects are colliding. 
