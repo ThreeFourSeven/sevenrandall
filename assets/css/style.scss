@@ -3,6 +3,10 @@
 
 @import "{{ site.theme }}";
 
+.ul {
+    list-style: none;
+}
+
 .hlist {
     list-style: none;
     columns: 2;
