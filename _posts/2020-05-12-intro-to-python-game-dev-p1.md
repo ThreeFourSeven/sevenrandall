@@ -164,22 +164,49 @@ self.previous_mouse_position = [0, 0]
 self.mouse_velocity = [0, 0]
 ```
 
+Key and Mouse button methods.
+
+```python
+#Game
+def is_key_down(self, key):
+  return self.keys_down[key]
+
+def is_key_clicked(self, key):
+  return key in self.keys_clicked and self.keys_clicked[key]
+
+def is_button_down(self, button):
+  return self.buttons_down[button]
+
+def is_button_clicked(self, button):
+  return button in self.buttons_clicked and self.buttons_clicked[button]
+
+def is_key_mod(self, key_mod):
+  return self.key_mods & key_mod
+
+def get_scroll(self):
+  if self.is_button_clicked(3):
+    return -1
+  if self.is_button_clicked(4):
+    return 1
+  return 0
+```
+
 Example usage.
 
 ```python
 #Game.update()
 def update(self):
-  if pygame.K_SPACE in self.keys_clicked and self.keys_clicked[pygame.K_SPACE]:
+  if self.is_key_clicked(pygame.K_SPACE):
     print("Clicked the space bar!")
 
-  if self.buttons_down[0] and self.buttons_down[2]:
-    print("The left and right mouse button are held down!")
+  if self.is_button_down(0) and self.is_button_down(2):
+      print("The left and right mouse button are held down!")
 
-  if 0 in self.buttons_clicked and self.buttons_clicked[0]:
+  if self.is_button_clicked(0):
       print("The left mouse button was clicked!")
 
-  if self.keys_down[pygame.K_SPACE] and self.key_mods & pygame.KMOD_SHIFT:
-    print("The space bar and shift are held down!")
+  if self.is_key_down(pygame.K_SPACE) and self.is_key_mod(pygame.KMOD_SHIFT):
+      print("The space bar and shift are held down!")
 
   print("The mouse is located at", self.mouse_position, "with a velocity of", self.mouse_velocity)
 ```
@@ -201,10 +228,12 @@ def poll_input(self):
   self.buttons_down = pygame.mouse.get_pressed()
   self.key_mods = pygame.key.get_mods()
 
+  #gets the new mouse position
   tuple_mouse_pos = pygame.mouse.get_pos()
   self.mouse_position[0] = tuple_mouse_pos[0]
   self.mouse_position[1] = tuple_mouse_pos[1]
 
+  # compares the new mouse position with the old to see if they are different
   if self.previous_mouse_position[0] != self.mouse_position[0] and self.previous_mouse_position[1] != self.mouse_position[1]:
     self.mouse_velocity[0] = self.mouse_position[0] - self.previous_mouse_position[0]
     self.mouse_velocity[1] = self.mouse_position[1] - self.previous_mouse_position[1]
