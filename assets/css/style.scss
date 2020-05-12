@@ -4,9 +4,11 @@
 @import "{{ site.theme }}";
 
 .navbar {
-    display: inline-block
+    display: inline-block;
+    list-style: none;
 }
 
 .foot {
-    display: inline-block
+    display: inline-block;
+    list-style: none;
 }
