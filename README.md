@@ -1,6 +1,8 @@
-# 3 Part series on Python Game Development
-All you need to get started is a version of python with pip on your machine. Any text editor will work. 
+# ThreeFourSeven
 
+<<<<<<< HEAD
+A Jekyll github pages website to share some of my projects and experiences. 
+=======
 ## Part 1
 First step is to open a terminal and type.
 
@@ -13,3 +15,4 @@ First step is to open a terminal and type.
 
 ## Part 3
 ...contents...
+>>>>>>> 37b5d6d6f6b50c057dfa4b9618b9ba8ea5f400d9
