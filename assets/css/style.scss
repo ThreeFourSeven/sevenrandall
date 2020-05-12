@@ -3,6 +3,10 @@
 
 @import "{{ site.theme }}";
 
+.navbar {
+    font-size: 150%;
+}
+
 ul li {
     list-style: none;
 }
