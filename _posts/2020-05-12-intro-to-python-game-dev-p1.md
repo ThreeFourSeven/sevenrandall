@@ -15,7 +15,7 @@ This tutorial assumes that you are familiar with python, and have **[PyCharm](ht
 - An Entity Component System.    
 - Making a game.
 
-The First step is to install pygame, PyCharm makes this easy for us. Simply create a new python containing this.
+The First step is to install pygame, PyCharm makes this easy for us. Simply create a new python file containing this.
 
 ```python
 import pygame
@@ -46,11 +46,11 @@ Will get the current keyboard and mouse events from the display.
 
 > update()
 
-Will contain operations that need to performed every frame. Examples would be responding to user input, moving characters, and detecting collisions.
+Will contain operations that need to be performed every frame. Examples would be responding to user input, moving characters, and detecting collisions.
 
 > clear_input()
 
-Will clear all stored keyboard and mouse events
+Will clear all stored keyboard and mouse events.
 
 > clear()
 
@@ -84,7 +84,7 @@ After that is called we can create the display with.
 ```python
 pygame.display.set_mode((width, height), flags, depth)
 ```
-**Width** and **Height** correspond to the dimensions of the display. **Flags** is a [bitfeild](https://wiki.python.org/moin/BitManipulation) that stores several useful boolean values such as.
+**Width** and **height** correspond to the dimensions of the display. **Flags** is a [bitfeild](https://wiki.python.org/moin/BitManipulation) that stores several useful boolean values such as.
 
 - FULLSCREEN
 - DOUBLEBUF
@@ -103,7 +103,7 @@ def create_display(width, height, title="pygame-display"):
   return display
 ```
 
-If you call this nothing will happen, and thats because the display is created for a moment and then instantly closed. This may appear like a problem but actually everything is working correctly, we just need to have some process either wait or use the created window. To start well create a class which will contain all the methods covered above.
+If you call this nothing will happen, and thats because the display is created for a moment and then instantly closed. This may appear like a problem but actually everything is working correctly, we just need to have some process either wait or use the created window. To start we'll create a class which will contains all the methods covered above.
 
 ```python
 class Game:
