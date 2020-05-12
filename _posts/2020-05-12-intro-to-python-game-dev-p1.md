@@ -6,7 +6,7 @@ date: 2020-05-12
 
 ## Intro to Python Game Dev with Pygame Part 1
 
-This tutorial assumes that you are familiar with python, and have [PyCharm](https://www.jetbrains.com/pycharm/) already installed. This part the following parts will cover the following.
+This tutorial assumes that you are familiar with python, and have **[PyCharm](https://www.jetbrains.com/pycharm/)** already installed. This and following parts will cover.
 
 - Setting up pygame.
 - Using pygame to create a display.
@@ -69,7 +69,7 @@ So from this our display will need to.
   - Create a frame with a given title, width and height.
   - Clear a frame to a single color.
   - Swap frames.
-  - close on user input.
+  - Close on user input.
 
 Now to create the display, pygame first requires you to call.
 
@@ -183,8 +183,10 @@ def clear_input(self):
   self.buttons.clear()
 ```
 
-Suprisingly just with that we now have the display opening and responding to input events with. 
+Now have the display opening and responding to input events with. 
 
 ```python
 Game().run()
 ```
+
+Next time well cover how to render objects to the screen, and detect when objects are colliding. 
