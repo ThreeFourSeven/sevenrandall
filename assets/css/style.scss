@@ -3,12 +3,14 @@
 
 @import "{{ site.theme }}";
 
+.ul {
+    list-style: none;
+}
+
 .navbar {
     display: inline-block;
-    list-style: none;
 }
 
 .foot {
     display: inline-block;
-    list-style: none;
 }
