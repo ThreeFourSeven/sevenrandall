@@ -49,9 +49,13 @@ Flags is a bitfeild that stores a number of useful settings such as.
 Finally depth is the number of bits to use per color. 
 
 > def create_display(width, height, title="pygame-display"):
+>
 >   pygame.display.init()
+>
 >   display = pygame.display.set_mode((width, height), 0, depth)
+>
 >   pygame.display.set_caption(title)
+>
 >   return display
 
 ### Part 2 Using Pygame
