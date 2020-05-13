@@ -214,7 +214,7 @@ def poll_input(self):
     self.previous_mouse_position = self.mouse_position.copy()
 ```
 
-You may be confused why there is a -1, well for some reason event.button returns a value from 1 to 3, while pygame.mouse.get_pressed() returns a value from 0 to 2. 
+You may be confused why there is a -1, well for some reason `event.button` returns a value from 1 to 3, while `pygame.mouse.get_pressed()` returns a value from 0 to 2. 
 ```python
 self.buttons_clicked[event.button-1] = True
 ```
@@ -232,4 +232,4 @@ Now we have the display opening and responding to input events with.
 Game().run()
 ```
 
-Next part will cover how to render objects to the screen, and detect when objects are colliding. 
+[Next part](https://threefourseven.github.io/blog/2020/05/13/intro-to-python-game-dev-p2) will cover how to render objects to the screen, and detect when objects are colliding. 
