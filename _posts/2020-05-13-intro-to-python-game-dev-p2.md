@@ -39,8 +39,10 @@ Now that pygame and the current frame are ready to be drawn onto we can write so
 def draw_circle(self, x: int, y: int, radius: int, color: pygame.Color):
     pygame.draw.circle(self.display, color, (x, y), radius)
 
-def draw_box(self, x: int, y: int, width: int, height: int, color: pygame.Color):
-    pygame.draw.rect(self.display, color, (x, y, width, height))
+def draw_box(self, x: int, y: int, width: int, height: int, color: pygame.Color, bool: center = False):
+ # if centered then will use the box's size to offset the position
+    pos = (x, y) if not center else (x - width//2, y - height//2)
+    pygame.draw.rect(self.display, color, (pos[0], pos[1], width, height))
 
 def draw_line(self, sx: int, sy: int, ex: int, ey: int, color: pygame.Color, thickness: int = 1):
     pygame.draw.line(self.display, color, (sx, sy), (ex, ey), thickness)
@@ -131,6 +133,13 @@ def box_box(box_a: (int, int, int, int), box_b: (int, int, int, int)):
     collision_x = box_a[0] + box_a[2] >= box_b[0] and box_b[0] + box_b[2] >= box_a[0]
     collision_y = box_a[1] + box_a[3] >= box_b[3] and box_b[1] + box_b[3] >= box_a[1]
     return collision_x and collision_y
+
+def circle_box(circle: (int, int, int), box: (int, int, int, int)):
+    closest_x = max(min(circle[0], box[0] + box[2]//2), box[0] - box[2]//2)
+    closest_y = max(min(circle[1], box[1] + box[3]//2), box[1] - box[3]//2)
+    distance_x = circle[0] - closest_x
+    distance_y = circle[1] - closest_y
+    return distance_x ** 2 + distance_y ** 2 <= circle[2] ** 2
 
 def point_box(point: (int, int), box: (int, int, int, int)):
     return box_box((point[0], point[1], 0, 0), box)

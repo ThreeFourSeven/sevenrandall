@@ -15,7 +15,7 @@ This tutorial assumes that you are familiar with python, and have **[PyCharm](ht
 - An Entity Component System.    
 - Making a game.
 
-The first step is to install pygame, PyCharm makes this easy for us. Simply create a new python file containing this.
+The first step is to install pygame, PyCharm makes this easy for us. Simply create a new python project with a single file containing.
 ```python
 import pygame
 ```
@@ -33,7 +33,7 @@ while running:
   swap_frame()
 ```
 
-`init()` will contain operations that can be performed once, or before game launch. Some examples would be asset loading or sometimes world generation. 
+`init()` will contain operations that can be performed once, or before game launch. Some examples would be asset loading or world generation. 
 
 `poll_input()` will get the current keyboard and mouse events from the display.
 
