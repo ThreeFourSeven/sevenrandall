@@ -191,7 +191,7 @@ def draw(self):
         entity.draw(self)
 ```
 
-If you are confused and have no idea how any of this will make life easier thats okay, I urge you to bare with me and look at this example. Lets say you wanted to clone a mobile game about a bird that tries to not fall off the map or run into green poles. Then we can make a Pole and bird entity that each contain their own relative logic.
+If you are confused and have no idea how any of this will make life easier thats okay, I urge you to bare with me and look at this example. Lets say you wanted to clone a mobile game about a bird that tries to not fall off the map or run into green poles. Then we can make a pole and bird entity that each contain their own logic.
 
 ```python
 DISPLAY_WIDTH = 1600
@@ -270,4 +270,4 @@ bird.add_component(Shape(ShapeType.Circle_, [32], pygame.Color(0xff0000ff)))
 add_entity(bird)
 ```
 
-While this is only a simple game the idea doesn't change as more complexity is added. Instead of copying and pasting sections of code, just make a component and then add it to whatever entity should have that functionality. Another example would be for a game that has many different animals, each of these animals if programmed as seperate objects would have almost the same code. Instead make an animal component which controls how the animal wanders, looks for food or water, and responds to dangers. This way if you want to make different types of animals all you need to do is supply different visuals.
+While this is only a simple game the idea doesn't change as more complexity is added. Instead of copying and pasting sections of code, just make a component and then add it to whatever entity should have that functionality. Another example would be for a game that has many different animals, each of these animals if programmed as seperate objects would have almost the same code. Instead make an animal component which controls how the animal wanders, looks for food or water, and responds to dangers. This way if you want to make different types of animals all you need to do is supply different visuals. Next part will cover making a puzzle game with this system.
