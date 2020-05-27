@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Blog
+types: [Games, Graphics, MachineLearning, Other]
 ---
 <ul class="hlist">
-    {% for post in site.posts %}
-    <li><a href="/{{post.type}}">{{post.type}}</a></li>
+    {% for type in page.types %}
+    <li><a href="/{{type}}">{{type}}</a></li>
     {% endfor %}
 </ul>
