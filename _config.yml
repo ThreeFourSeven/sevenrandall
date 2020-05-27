@@ -1,2 +1,2 @@
 theme: jekyll-theme-tactile
-permalink: /blog/:year/:month/:day/:title
+permalink: /blog/:type/:year/:month/:day/:title

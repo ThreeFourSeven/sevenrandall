@@ -3,6 +3,7 @@ layout: post
 title: "Intro to Python Game Dev with Pygame Part 1"
 date: 2020-05-12
 comments: true
+type: Games
 ---
 
 ## Intro to Python Game Dev with Pygame Part 1
