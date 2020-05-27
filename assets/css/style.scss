@@ -29,3 +29,10 @@ h1 h2 h3 h4 h5 h6 {
     -webkit-columns: 3;
     -moz-columns: 3;
 }
+
+.clist {
+    list-style: none;
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
+}
