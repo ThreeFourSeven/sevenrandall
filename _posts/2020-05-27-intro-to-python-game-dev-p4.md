@@ -1,0 +1,257 @@
+---
+layout: post
+title: "Intro to Python Game Dev with Pygame Part 4"
+date: 2020-05-27
+comments: true
+---
+
+## Intro to Python Game Dev with Pygame Part 4
+
+In this blog we will make SparkyFly a game about a fly that needs to collect enough sparks before winter so that he can leave with his friends. Each level will use 4 base tiles, a spark, a positive charge, a negative charge, and insulation. Since the fly has a net negative charge, postive charges pull the fly, and negative charges push, while insulation will send you to the start of the level. The goal of the game is to beat all 10 levels with the fewest deaths. The first step of development is asset creation, for this we need a texture for each of the base tiles and a fly. Warning I am no artist.
+
+```python
+# Try using different window dimensions, the map scales with the window
+WIDTH = 960
+HEIGHT = 960
+# All textures are on github
+spark_tex = load_texture("charge.png")
+fly_tex = load_texture("fly.png")
+insulator_tex = load_texture("insulator.png")
+minus_tex = load_texture("minus.png")
+plus_tex = load_texture("plus.png")
+# Each texture is 16x16
+TILE_SIZE = 16
+```
+
+Given that the objects in this game don't have similar logic there is no benifit to making new components. The components used are from last part.
+
+```python
+class Fly(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.position = [x, y]
+        shape = Shape(ShapeType.Circle_, [4], pygame.Color(0xffffffff))
+        shape.texture = fly_tex
+        self.add_component(shape)
+        self.add_component(Controller(3))
+        # Gravity
+        self.add_component(Drift([0, 1]))
+        self.sparkCount = 0
+        self.deathCount = 0
+        self.start_position = [x, y]
+
+    def draw(self, game):
+        super().draw(game)
+        game.draw_text("Sparks: " + str(self.sparkCount), self.position[0], self.position[1] - 16, 15,
+                       pygame.Color(0xffffffff), True)
+
+
+class Spark(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.position = [x, y]
+        shape = Shape(ShapeType.Circle_, [8], pygame.Color(0xffffffff))
+
+        def on_collide(entity_a, entity_b):
+            remove_entity(entity_a)
+            entity_b.sparkCount += 1
+
+        shape.on_collide = on_collide
+        shape.texture = spark_tex
+        self.add_component(shape)
+
+
+class Insulator(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.position = [x, y]
+        shape = Shape(ShapeType.Box_, [TILE_SIZE, TILE_SIZE], pygame.Color(0xffffffff))
+
+        def on_collide(entity_a, entity_b):
+            entity_b.position = entity_b.start_position.copy()
+            entity_b.deathCount += 1
+
+        shape.on_collide = on_collide
+        shape.texture = insulator_tex
+        self.add_component(shape)
+
+
+class Minus(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.position = [x, y]
+        shape = Shape(ShapeType.Circle_, [48], pygame.Color(0xffffffff))
+
+        def on_collide(entity_a, entity_b):
+            away = [entity_b.position[0] - entity_a.position[0], entity_b.position[1] - entity_a.position[1]]
+            D = (away[0] ** 2 + away[1] ** 2) ** .5
+            n_x = away[0] / D
+            n_y = away[1] / D
+            entity_b.position[0] += 0.1 * n_x * n_x
+            entity_b.position[1] += 0.1 * n_y * n_y
+
+        shape.on_collide = on_collide
+        shape.texture = minus_tex
+        self.add_component(shape)
+
+
+class Plus(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__()
+        self.position = [x, y]
+        shape = Shape(ShapeType.Circle_, [48], pygame.Color(0xffffffff))
+
+        def on_collide(entity_a, entity_b):
+            away = [entity_b.position[0] - entity_a.position[0], entity_b.position[1] - entity_a.position[1]]
+            D = (away[0] ** 2 + away[1] ** 2) ** .5
+            entity_b.position[0] -= 0.5 * away[0] / D
+            entity_b.position[1] -= 0.5 * away[1] / D
+
+        shape.on_collide = on_collide
+        shape.texture = plus_tex
+        self.add_component(shape)
+
+```
+
+Now that the entities are finished we need to create the levels, each level is randomly generated with.
+
+```python
+# Calculate map dimension given window dimension
+HALF_WIDTH = WIDTH // 2
+HALF_HEIGHT = WIDTH // 2
+MAP_WIDTH = HALF_WIDTH // TILE_SIZE
+MAP_HEIGHT = HALF_HEIGHT // TILE_SIZE
+
+# The map will be a list of characters 
+# I = Insulator
+# S = Spark
+# F = Fly
+# M = Minus
+# P = Plus
+# B = Blank
+def gen_map():
+    # initializes tiles to 0
+    map = [0 for i in  range(MAP_WIDTH*MAP_HEIGHT)]
+    # Random player position inside the map bounds
+    player_x, player_y = random.randint(1, width - 2), random.randint(1, height - 2)
+    for i in range(0, MAP_HEIGHT):
+        for j in range(0, MAP_WIDTH):
+            # If edge of map add insulator
+            if i == 0 or j == 0 or i == height - 1 or j == width - 1:
+                map[j + i * MAP_WIDTH] = "I"
+            elif random.random() < 0.05:
+                # generates a horizontal or veritcal line of insulators
+                x_width = random.randint(1, 7)
+                y_height = 1 if x_width != 1 else random.randint(2, 7)
+                for u in range(i, min(i + y_height, height)):
+                    for v in range(j, min(j + x_width, width)):
+                        map[v + u * width] = "I"
+            elif random.random() < 0.025:
+                map[j + i * width] = "S"
+            elif random.random() < 0.05:
+                if random.random() < 0.5:
+                    map[j + i * width] = "M"
+                else:
+                    map[j + i * width] = "P"
+            else:
+                map[j + i * width] = "B"
+    # After map is generated add player
+    map[player_x + player_y * width] = "F"
+    return map
+```
+
+This will generate the data for a level, to convert the character list to an entity list we will use another method.
+
+```python
+
+# Class that contains the count of the total sparks spawned in the current level
+class SparkCounter:
+    count =  0
+
+# Class that contains the count of the current completed levels 
+class LevelCounter:
+    count = 0
+
+# fly entity should persist between levels
+fly = Fly(0, 0)
+
+def create_world():
+    # generates a random level
+    MAP = gen_map(MAP_WIDTH, MAP_HEIGHT)
+    fly_pos = [0, 0]
+    SparkCounter.count = 0
+    for j in range(0, MAP_HEIGHT):
+        for i in range(0, MAP_WIDTH):
+            tile = MAP[i + j * MAP_WIDTH]
+            # Each tile is centered, so we need to offset them by half the tile size
+            if tile == 'S':
+                add_entity(
+                    Spark(i * TILE_SIZE + TILE_SIZE // 2, j * TILE_SIZE + TILE_SIZE // 2))
+                SparkCounter.count += 1
+            elif tile == 'F':
+                fly_pos = [i * TILE_SIZE + TILE_SIZE // 2, j * TILE_SIZE + TILE_SIZE // 2]
+            elif tile == 'I':
+                add_entity(Insulator(i * TILE_SIZE + TILE_SIZE // 2, j * TILE_SIZE + TILE_SIZE // 2))
+            elif tile == 'M':
+                add_entity(
+                    Minus(i * TILE_SIZE + TILE_SIZE // 2, j * TILE_SIZE + TILE_SIZE // 2))
+            elif tile == 'P':
+                add_entity(
+                    Plus(i * TILE_SIZE + TILE_SIZE // 2, j * TILE_SIZE + TILE_SIZE // 2))
+    # Prevents non player tiles from colliding with eachother  
+    for e_a in ENTITIES.values():
+        for e_b in ENTITIES.values():
+            if e_a.id != e_b.id:
+                e_a.components[ComponentType.Shape_].ignore(e_b)
+    fly.position = fly_pos.copy()
+    fly.start_position = fly_pos.copy()
+    fly.sparkCount = 0
+    add_entity(fly)
+
+```
+
+Before we combine everything together to make SparkyFly, there is one problem we need to address. When rendering 16x16 or smaller textures they will be tiny on most modern screens so to fix this we can scale the pixel size of the display. This requires a few changes to the structure of our Game class.
+
+```python
+# Game.__init__()
+self.current_frame = None
+
+# Game.init()
+def init(self, width=WIDTH, height=HEIGHT, pixel_scale=2):
+    self.current_frame = pygame.Surface((width / pixel_scale, height / pixel_scale))
+
+# Game.clear()
+def clear(slef)
+    self.current_frame.fill(pygame.Color(0x000000ff))
+
+# Change draw commands to use the current_frame instead of the display
+# Game.draw____
+self.display -> self.current_frame
+
+# Game.swap_frame()
+def swap_frame(self):
+    self.display.blit(pygame.transform.scale(self.current_frame, self.display.get_rect().size), (0, 0))
+    pygame.display.update()
+    pygame.display.flip()
+```
+
+This works because we create a frame with the true number of pixels, then on `swap_frame` that frame is stretched to fit the borders of the display. For example with a pixel scale of 2 and display dimensions of 960x960 will give a 480x480 frame which can be drawn to, after all draw commands the frame is stretched to fit the 960x960 display. Now to bring everything together.
+
+```python
+# Game.init()
+create_world()
+
+# Game.update()
+# Determines when the fly has gathered all the sparks in the current level
+# Then generates a new level or ends the game
+if fly.sparkCount >= SparkCounter.count:
+    LevelCounter.count += 1
+    ENTITIES.clear()
+    if LevelCounter.count >= 10:
+        exit()
+    create_world()
+```
+
+![Screenshot of gameplay](/assets/images/sparky_fly.PNG)
+
+The first thing you may notice is that since each level is randomly generated each time you launch the game there is a different starting level, to fix this you can seed python's random generator or generate the levels and store them in a text file or constant variable. Another thing is that there is chance for the player to spawn trapped by insulators, this can be fixed in a number of ways one being to unsure there is a 3x3 area of blank tiles around the player. All the code for each part is on **[github](https://github.com/ThreeFourSeven/IntroToPythonGameDev-BlogTutorial)**, but i will warn you that it is not organized by part, if you find yourself confused looking through the code try going back over the previous parts. 
