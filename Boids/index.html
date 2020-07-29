@@ -1,0 +1,48 @@
+---
+layout: default
+title: Boids Demo
+---
+
+<h2>
+    Boids Demo
+</h2>
+
+
+<p>
+    A boid refers to a bird like object. There are several approaches that can be taken to achieve a bird like flocking behavoir. Generally boid algorithms start with the same set of rules, which are. 
+</p>
+
+<ul>
+    <li>
+        Boids should follow adjacent boids
+    </li>
+    <li>
+        Boids should avoid adjacent boids
+    </li>
+    <li>
+        Boids should follow the flock
+    </li>
+</ul>
+
+<p>
+    The great thing about this design is that it supports custom behavoirs easily. For example, if you want the flock to orbit around or move towards a point then you can make a rule that alters each boids velocity to get the desired behavoir. 
+    In this demo, each boid has a ray cast in the direction it is currently moving, if that ray collides with any boid then adpats it's velocity with the boid rules. The scripts used are available here.
+</p>
+
+
+<h2>Controls</h2>
+
+<ul>
+    <li>Hold right click to move the apple</li>
+    <li>Press space to spawn a boid at the cursor's position</li>
+</ul>
+
+<script src="../assets/unity/boids/TemplateData/UnityProgress.js"></script>
+<script src="../assets/unity/boids/Build/UnityLoader.js"></script>
+<script>
+    var gameInstance = UnityLoader.instantiate("gameContainer", "../assets/unity/boids/Build/WebBuild.json", {onProgress: UnityProgress});
+</script>
+<div class="webgl-content">
+    <div id="gameContainer" style="width: 200%; height: 250%; right: 50%;">
+    </div>
+</div>

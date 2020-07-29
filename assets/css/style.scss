@@ -36,3 +36,33 @@ h1 h2 h3 h4 h5 h6 {
     -webkit-columns: 4;
     -moz-columns: 4;
 }
+
+.imageGrid {
+    display: grid;
+    grid-gap: 15px;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.selectable {
+    transition: .5s ease-out;
+    filter: brightness(100%);
+}
+
+.selectable:hover {
+    filter: brightness(75%);
+}
+
+.text-block {
+    position: absolute;
+    bottom: 20px;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    opacity: 0;
+}
+
+.selectable:hover > .text-block {
+    opacity: 1.0;
+}
