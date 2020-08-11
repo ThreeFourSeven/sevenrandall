@@ -3,9 +3,17 @@ layout: default
 title: Other
 ---
 <ul class="posts">
-    {% for post in site.posts %}
+
+{% assign post_ctr = 0 %}
+{% for post in site.posts %}
     {% if post.type == page.title %}
+        {% assign post_ctr = post_ctr | plus: 1 %}
         <li><span>{{ post.date | date_to_string }}</span> <a href="/sevenrandall/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
         <div class="postSpacer"></div>
     {% endif %}
-{% endfor %}
+{% endfor %}    
+{% if post_ctr == 0 %}
+    <li><span>No posts for this catergory yet.</span></li>
+{% endif %}
+    
+</ul>
