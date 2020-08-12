@@ -163,4 +163,4 @@ if point_box(point, box1) and self.is_button_down(0):
     self.draw_text("<- Selected!", self.width//2+64, 128, 20, pygame.Color(0xffffffff))
 ```
 
-With this you should start to get an idea of how a simple game could be made, but you'll find as you add more to `Game` and make other classes that there is something repetitive about creating an object, describing its location and size, drawing it, then responding to either user or collision events. So we can do better! **[Next part](https://threefourseven.github.io/sevenrandall/blog/2020/05/14/intro-to-python-game-dev-p3)** will be focused on designing a simple Entity Component System to fix this issue.
+With this you should start to get an idea of how a simple game could be made, but you'll find as you add more to `Game` and make other classes that there is something repetitive about creating an object, describing its location and size, drawing it, then responding to either user or collision events. So we can do better! **[Next part](https://threefourseven.github.io/sevenrandall//2020/05/14/intro-to-python-game-dev-p3)** will be focused on designing a simple Entity Component System to fix this issue.

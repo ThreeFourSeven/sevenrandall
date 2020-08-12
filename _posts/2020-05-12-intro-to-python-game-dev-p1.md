@@ -234,4 +234,4 @@ Now we have the display opening and responding to input events with.
 Game().run()
 ```
 
-[Next part](https://threefourseven.github.io/sevenrandall/blog/2020/05/13/intro-to-python-game-dev-p2) will cover how to render objects to the screen, and detect when objects are colliding. 
+[Next part](https://threefourseven.github.io/sevenrandall//2020/05/13/intro-to-python-game-dev-p2) will cover how to render objects to the screen, and detect when objects are colliding. 
