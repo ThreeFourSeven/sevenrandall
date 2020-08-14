@@ -6,23 +6,51 @@ comments: true
 type: Games
 ---
 
-## Intro to Python Game Dev with Pygame Part 1
+<h2 class="bodyHeader">
+  Intro to Python Game Dev with Pygame Part 1
+</h2>
 
-This tutorial assumes that you are familiar with python, and have **[PyCharm](https://www.jetbrains.com/pycharm/)** already installed. This and following parts will cover.
-- Setting up pygame.
-- Using pygame to create a display.
-- Drawing with pygame.
-- Detecting collision between various shapes.
-- An Entity Component System.    
-- Making a game.
+<p>
+  This tutorial assumes that you are familiar with python,
+  and have <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> 
+  already installed. This and following parts will cover.
+</p>
 
-The first step is to install pygame, PyCharm makes this easy for us. Simply create a new python project with a single file containing.
-```python
+<ul class="bodyItem">
+  <li>
+      Setting up pygame.
+  </li>
+  <li>
+      Using pygame to create a display.
+  </li>
+  <li>
+      Drawing with pygame.
+  </li>
+  <li>
+    Detecting collision between various shapes.  
+  </li>
+  <li>
+    An Entity Component System.
+  </li>
+  <li>
+    Making a game.
+  </li>
+</ul>
+
+<p>
+  The first step is to install pygame, PyCharm makes this easy for us. Simply create a new python project with a single file containing.
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 import pygame
-```
+    </code>
+</pre>
 
-As long as your project's python enviornment is configured properly you should be able to hover over the error and click **install package pygame**. Now that the dependencies are delt with it is time we establish the structure our game will have.  
-```python
+<p>
+  As long as your project's python enviornment is configured properly you should be able to hover over the error and click **install package pygame**. Now that the dependencies are delt with it is time we establish the structure our game will have.  
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 running = True
 init()
 while running:
@@ -32,56 +60,81 @@ while running:
   clear()
   render()
   swap_frame()
-```
+    </code>
+</pre>
 
-`init()` will contain operations that can be performed once, or before game launch. Some examples would be asset loading or world generation. 
-
-`poll_input()` will get the current keyboard and mouse events from the display.
-
-`update()` will contain operations that need to be performed every frame. Examples would be responding to user input, moving characters, and detecting collisions.
-
-`clear_input()` will clear all stored keyboard and mouse events.
-
-`clear()` will clear the current frame to a single color.
-
-`render()` will contain all pygame draw operations.
-
-`swap_frame()` will swap the old frame for the current frame.
-
-So from this our display will need to.
-  - Create a frame with a given title, width and height.
-  - Clear a frame to a single color.
-  - Swap frames.
-  - Close on user input.
-
+<p>
+  <i>init()</i> will contain operations that can be performed once, or before game launch. Some examples would be asset loading or world generation. 
+  <i>poll_input()</i> will get the current keyboard and mouse events from the display.
+  <i>update()</i> will contain operations that need to be performed every frame. Examples would be responding to user input, moving characters, and detecting collisions.
+  <i>clear_input()</i> will clear all stored keyboard and mouse events.
+  <i>clear()</i> will clear the current frame to a single color.
+  <i>render()</i> will contain all pygame draw operations.
+  <i>swap_frame()</i> will swap the old frame for the current frame. So from this our
+  display will need to.
+</p>
+<ul class="bodyItem">
+  <li>
+    Create a frame with a given title, width and height.
+  </li>
+  <li>
+    Clear a frame to a single color.
+  </li>
+  <li>
+    Swap frames.
+  </li>
+  <li>
+    Close on user input.
+  </li>
+</ul>
+<p>
 Now to create the display, pygame first requires you to call.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 pygame.display.init()
-```
+    </code>
+</pre>
 
+<p>
 After that is called we can create the display with.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 pygame.display.set_mode((width, height), flags, depth)
-```
-**Width** and **height** correspond to the dimensions of the display. **Flags** is a [bitfeild](https://wiki.python.org/moin/BitManipulation) that stores several useful boolean values such as.
-- FULLSCREEN
-- DOUBLEBUF
-- RESIZABLE
-- SCALED
-- NOFRAME
-- HWSURFACE
+    </code>
+</pre>
 
-Finally depth is the number of bits to use per color. Putting this all together in a function we get.
-```python
+<p>
+<i>Width</i> and <i>height</i> correspond to the dimensions
+of the display. <i>Flags</i> is a <a href="https://wiki.python.org/moin/BitManipulation">bitfeild</a>
+that stores several useful boolean values such as.
+</p>
+<ul class="bodyItem">
+<li>FULLSCREEN</li>
+<li>DOUBLEBUF</li>
+<li>RESIZABLE</li>
+<li>SCALED</li>
+<li>NOFRAME</li>
+<li>HWSURFACE</li>
+</ul>
+<p>
+  Finally depth is the number of bits to use per color. Putting this all together in a function we get.
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 def create_display(width, height, title="pygame-display"):
   pygame.display.init()
   display = pygame.display.set_mode((width, height), 0, 32)
   pygame.display.set_caption(title)
   return display
-```
-
+    </code>
+</pre>
+<p>
 If you call this nothing will happen, and thats because the display is created for a moment and then instantly closed. This may appear like a problem but actually everything is working correctly, we just need to have some process either wait or use the created window. To start we'll create a class which will contains all the methods covered above.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 class Game:
   def __init__(self):
     self.running = True
@@ -125,10 +178,13 @@ class Game:
       self.clear()
       self.render()
       self.swap_frame()
-```
-
+    </code>
+</pre>
+<p>
 These will store all input events coming from our display. 
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 self.keys_clicked = {}
 self.buttons_clicked = {}
 self.keys_down = []
@@ -137,10 +193,13 @@ self.key_mods = 0
 self.mouse_position = [0, 0]
 self.previous_mouse_position = [0, 0]
 self.mouse_velocity = [0, 0]
-```
-
+    </code>
+</pre>
+<p>
 Key and Mouse button methods.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game
 def is_key_down(self, key):
   return self.keys_down[key]
@@ -163,10 +222,13 @@ def get_scroll(self):
   if self.is_button_clicked(4):
     return 1
   return 0
-```
-
+    </code>
+</pre>
+<p>
 Example usage.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.update()
 def update(self):
   if self.is_key_clicked(pygame.K_SPACE):
@@ -182,10 +244,13 @@ def update(self):
       print("The space bar and shift are held down!")
 
   print("The mouse is located at", self.mouse_position, "with a velocity of", self.mouse_velocity)
-```
-
+    </code>
+</pre>
+<p>
 In order to have the above information we gather the events from pygame every frame.
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Game.poll_input()
 def poll_input(self):
   # pygame.event.get() gets all the thrown events
@@ -214,24 +279,38 @@ def poll_input(self):
     self.mouse_velocity[0] = self.mouse_position[0] - self.previous_mouse_position[0]
     self.mouse_velocity[1] = self.mouse_position[1] - self.previous_mouse_position[1]
     self.previous_mouse_position = self.mouse_position.copy()
-```
-
-You may be confused why there is a -1, well for some reason `event.button` returns a value from 1 to 3, while `pygame.mouse.get_pressed()` returns a value from 0 to 2. 
-```python
+    </code>
+</pre>
+<p>
+  You may be confused why there is a -1, well for some reason <i>event.button</i> returns a value from 1 to 3, while <i>pygame.mouse.get_pressed()</i> returns a value from 0 to 2. 
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 self.buttons_clicked[event.button-1] = True
-```
-
-To clear the stored events we only need to clear the dictionaries as the lists are reset every frame.
-```python
+    </code>
+</pre>
+<p>
+  To clear the stored events we only need to clear the dictionaries as the lists are reset every frame.
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.clear_input()
 def clear_input(self):
   self.keys_clicked.clear()
   self.buttons_clicked.clear()
-```
+    </code>
+</pre>
 
+<p>
 Now we have the display opening and responding to input events with. 
-```python
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 Game().run()
-```
-
-[Next part](https://threefourseven.github.io/sevenrandall//2020/05/13/intro-to-python-game-dev-p2) will cover how to render objects to the screen, and detect when objects are colliding. 
+    </code>
+</pre>
+<p>
+  <a href="https://threefourseven.github.io/sevenrandall//2020/05/13/intro-to-python-game-dev-p2">
+    Next part
+  </a> will cover how to render objects to the screen, and detect when objects are colliding. 
+</p>

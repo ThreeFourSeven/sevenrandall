@@ -5,37 +5,66 @@ date: 2020-05-13
 comments: true
 type: Games
 ---
+<h2 class="bodyHeader">
+Intro to Python Game Dev with Pygame Part 2
+</h2>
 
-## Intro to Python Game Dev with Pygame Part 2
+<p>
+Time to start drawing. To get started we'll need to implement the <i>clear</i> 
+and <i>swap_frame</i> methods covered in the last part. Just to reiterate,
+the <i>clear</i> method will set the current frame to a single color,
+and the <i>swap_frame</i> method will swap the display's frame with the current
+frame we have drawn onto. Pygame makes this easy.  
+</p>
 
-Time to start drawing. To get started we'll need to implement the `clear` and `swap_frame` methods covered in the last part. Just to reiterate, the clear method will set the current frame to a single color, and the swap_frame method will swap the display's frame with the current frame we have drawn onto. Pygame makes this easy.  
-
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.clear()
 def clear(self):
     # sets the color of every pixel in the current frame to black 
     self.display.fill(pygame.Color(0x000000ff))
-```
+    </code>
+</pre>
 
-This uses the display instance returned by `create_display` and fills the current frame with a **[pygame.Color](https://www.pygame.org/docs/ref/color.html)**. To swap the current frame with the new one we have `pygame.display.flip()`, but this wont work for drawing text, or textures. Pygame requires you to call `pygame.display.update()` for blending text and textures together which gets us.
-
-```python
+<p>
+This uses the display instance returned by <i>create_display</i>
+and fills the current frame with a <a src="https://www.pygame.org/docs/ref/color.html">
+pygame.Color</a>. To swap the current frame with the new one we have 
+<i>pygame.display.flip()</i>, but this wont work for drawing 
+text, or textures. Pygame requires you to call <i>pygame.display.update()</i>
+for blending text and textures together which gets us.
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.swap_frame()
 def swap_frame(self):
     pygame.display.update()
     pygame.display.flip()
-```
+    </code>
+</pre>
 
-One way to improve the performance would be to make a boolean flag which is only true when a texture or text is drawn that way you wont have any unecesary update calls. Before we go any further we also need to include this line in `init()` to initialize pygame's default font.
+<p>
+One way to improve the performance would be to make a boolean flag which is only true
+when a texture or text is drawn that way you wont have any unecesary update calls.
+Before we go any further we also need to include this line in <i>init()</i> to initialize
+pygame's default font.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.init()
 pygame.font.init()
-```
+    </code>
+</pre>
 
-Now that pygame and the current frame are ready to be drawn onto we can write some draw methods. While these aren't required, they will make life easier as you wont need to pass `self.display` or deal with merging frames using `display.blit`. 
+<p>
+Now that pygame and the current frame are ready to be drawn onto we can write some draw
+methods. While these aren't required, they will make life easier as you wont need to pass
+<i>self.display</i> or deal with merging frames using <i>display.blit</i>. 
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game
 def draw_circle(self, x: int, y: int, radius: int, color: pygame.Color):
     pygame.draw.circle(self.display, color, (x, y), radius)
@@ -57,11 +86,20 @@ def draw_text(self, txt: str, x: int, y: int, size: int, color: pygame.Color, ce
     pos = (x, y) if not center else (x - text_frame.get_width()//2, y - text_frame.get_height()//2)
     # merges the current frame with the text frame, make sure pygame.display.update is called
     self.display.blit(text_frame, pos)
-```
+    </code>
+</pre>
 
-Now that the basic drawing mehods are done its time to implement texture loading, as our game will require more than just text and colored shapes. First step is to make a texture loading method which will read an image file and return a texture object we can use to draw said image. See [pygame.image.load](https://www.pygame.org/docs/ref/image.html#pygame.image.load) for supported image file types.
+<p>
+Now that the basic drawing mehods are done its time to implement texture loading,
+as our game will require more than just text and colored shapes. First step is
+to make a texture loading method which will read an image file and return a texture
+object we can use to draw said image. See 
+<a href="https://www.pygame.org/docs/ref/image.html#pygame.image.load">
+pygame.image.load</a> for supported image file types.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Top of main file
 import os
 def load_texture(path):
@@ -72,20 +110,30 @@ def load_texture(path):
 
 # Example usage if your project dir looks like: main.py, texture.png
 load_texture("texture.png")
-```
+    </code>
+</pre>
 
+<p>
 To draw a texture.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.draw_texture
 def draw_texture(self, x: int, y: int, texture_frame, center: bool = False):
     pos = (x, y) if not center else (x - texture_frame.get_width()//2, y - texture_frame.get_height()//2)
     self.display.blit(texture_frame, pos)
-```
+    </code>
+</pre>
 
-Now you should be able to test out these draw methods by calling them in `render()`, but first lets record the width and height of our window to make positioning objects easier.
+<p>
+Now you should be able to test out these draw methods by calling them
+in <i>render()</i>, but first lets record the width and height of our
+window to make positioning objects easier.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # In Game.__init__()
 self.width = 0
 self.height = 0
@@ -93,11 +141,15 @@ self.height = 0
 # In Game.init()
 self.width = width
 self.height = height
-```
+    </code>
+</pre>
 
+<p>
 To draw some objects.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Game.__init__()
 self.texture = None
 
@@ -116,11 +168,15 @@ def render():
     for i in range(0, 4):
         for j in range(0, 4):
             self.draw_texture(j*self.texture.get_width(), i*self.texture.get_height(), self.texture, True)
-```
+    </code>
+</pre>
 
+<p>
 Now that all the draw methods required to make a game are done, how do we detect when an object is overlapping or colliding with another? We can write a few methods to detect collision between various shapes, such as lines, circles, boxes, and much more. I recommend you do some research into collision detection if the following do not work for your game. 
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 #Above Game
 def point_circle(point: (int , int), circle: (int, int, int)):
     return abs(point[0] - circle[0]) < circle[2] and abs(point[1] - circle[1]) < circle[2]
@@ -144,11 +200,15 @@ def circle_box(circle: (int, int, int), box: (int, int, int, int)):
 
 def point_box(point: (int, int), box: (int, int, int, int)):
     return box_box((point[0], point[1], 0, 0), box)
-```
+    </code>
+</pre>
 
+<p>
 A simple example using both drawing and collision detection would be.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # In Game.render()
 box = (64, 64, 32, 32)
 point = (self.mouse_position[0], self.mouse_position[1])
@@ -161,6 +221,14 @@ else:
 box1 = (self.width//2, 128, 64, 16)
 if point_box(point, box1) and self.is_button_down(0):
     self.draw_text("<- Selected!", self.width//2+64, 128, 20, pygame.Color(0xffffffff))
-```
+    </code>
+</pre>
 
-With this you should start to get an idea of how a simple game could be made, but you'll find as you add more to `Game` and make other classes that there is something repetitive about creating an object, describing its location and size, drawing it, then responding to either user or collision events. So we can do better! **[Next part](https://threefourseven.github.io/sevenrandall//2020/05/14/intro-to-python-game-dev-p3)** will be focused on designing a simple Entity Component System to fix this issue.
+<p>
+With this you should start to get an idea of how a simple game could be made, 
+but you'll find as you add more to <i>Game</i> and make other classes that there is
+something repetitive about creating an object, describing its location and size,
+drawing it, then responding to either user or collision events. So we can do better!
+<a href="https://threefourseven.github.io/sevenrandall//2020/05/14/intro-to-python-game-dev-p3">Next part</a>
+will be focused on designing a simple Entity Component System to fix this issue.
+</p>

@@ -6,11 +6,14 @@ comments: true
 type: Games
 ---
 
-## Intro to Python Game Dev with Pygame Part 4
+<h2 class="bodyHeader">Intro to Python Game Dev with Pygame Part 4</h2>
 
-In this blog we will make SparkyFly a game about a fly that needs to collect enough sparks before winter so that he can leave with his friends. Each level will use 4 base tiles, a spark, a positive charge, a negative charge, and insulation. Since the fly has a net negative charge, postive charges pull the fly, and negative charges push, while insulation will send you to the start of the level. The goal of the game is to beat all 10 levels with the fewest deaths. The first step of development is asset creation, for this we need a texture for each of the base tiles and a fly. Warning I am no artist.
+<p>
+    In this blog we will make SparkyFly a game about a fly that needs to collect enough sparks before winter so that he can leave with his friends. Each level will use 4 base tiles, a spark, a positive charge, a negative charge, and insulation. Since the fly has a net negative charge, postive charges pull the fly, and negative charges push, while insulation will send you to the start of the level. The goal of the game is to beat all 10 levels with the fewest deaths. The first step of development is asset creation, for this we need a texture for each of the base tiles and a fly. Warning I am no artist.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Try using different window dimensions, the map scales with the window
 WIDTH = 960
 HEIGHT = 960
@@ -22,11 +25,15 @@ minus_tex = load_texture("minus.png")
 plus_tex = load_texture("plus.png")
 # Each texture is 16x16
 TILE_SIZE = 16
-```
+    </code>
+</pre>
 
-Given that the objects in this game don't have similar logic there is no benifit to making new components. The components used are from last part.
+<p>
+    Given that the objects in this game don't have similar logic there is no benifit to making new components. The components used are from last part.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 class Fly(Entity):
     def __init__(self, x: int, y: int):
         super().__init__()
@@ -111,12 +118,15 @@ class Plus(Entity):
         shape.on_collide = on_collide
         shape.texture = plus_tex
         self.add_component(shape)
+    </code>
+</pre>
 
-```
+<p>
+    Now that the entities are finished we need to create the levels, each level is randomly generated with.
+</p>
 
-Now that the entities are finished we need to create the levels, each level is randomly generated with.
-
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Calculate map dimension given window dimension
 HALF_WIDTH = WIDTH // 2
 HALF_HEIGHT = WIDTH // 2
@@ -159,12 +169,15 @@ def gen_map():
     # After map is generated add player
     map[player_x + player_y * width] = "F"
     return map
-```
+    </code>
+</pre>
 
+<p>
 This will generate the data for a level, to convert the character list to an entity list we will use another method.
+</p>
 
-```python
-
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Class that contains the count of the total sparks spawned in the current level
 class SparkCounter:
     count =  0
@@ -208,12 +221,15 @@ def create_world():
     fly.start_position = fly_pos.copy()
     fly.sparkCount = 0
     add_entity(fly)
+    </code>
+</pre>
 
-```
+<p>
+    Before we combine everything together to make SparkyFly, there is one problem we need to address. When rendering 16x16 or smaller textures they will be tiny on most modern screens so to fix this we can scale the pixel size of the display. This requires a few changes to the structure of our Game class.
+</p>
 
-Before we combine everything together to make SparkyFly, there is one problem we need to address. When rendering 16x16 or smaller textures they will be tiny on most modern screens so to fix this we can scale the pixel size of the display. This requires a few changes to the structure of our Game class.
-
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Game.__init__()
 self.current_frame = None
 
@@ -234,11 +250,17 @@ def swap_frame(self):
     self.display.blit(pygame.transform.scale(self.current_frame, self.display.get_rect().size), (0, 0))
     pygame.display.update()
     pygame.display.flip()
-```
-
-This works because we create a frame with the true number of pixels, then on `swap_frame` that frame is stretched to fit the borders of the display. For example with a pixel scale of 2 and display dimensions of 960x960 will give a 480x480 frame which can be drawn to, after all draw commands the frame is stretched to fit the 960x960 display. Now to bring everything together.
-
-```python
+    </code>
+</pre>
+<p>
+    This works because we create a frame with the true number of pixels, then on <i>swap_frame</i> 
+    that frame is stretched to fit the borders of the display. For example with a pixel scale of 
+    2 and display dimensions of 960x960 will give a 480x480 frame which can be drawn to,
+    after all draw commands the frame is stretched to fit the 960x960 display. Now to bring
+    everything together.
+</p>
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Game.init()
 create_world()
 
@@ -251,8 +273,24 @@ if fly.sparkCount >= SparkCounter.count:
     if LevelCounter.count >= 10:
         exit()
     create_world()
-```
+    </code>
+</pre>
 
-![Screenshot of gameplay](./../../../assets/images/sparky_fly.PNG)
+<img src="./../../../assets/images/sparky_fly.PNG">
 
-The first thing you may notice is that since each level is randomly generated each time you launch the game there is a different starting level, to fix this you can seed python's random generator or generate the levels and store them in a text file or constant variable. Another thing is that there is chance for the player to spawn trapped by insulators, this can be fixed in a number of ways one being to unsure there is a 3x3 area of blank tiles around the player. All the code for each part is on **[github](https://github.com/ThreeFourSeven/IntroToPythonGameDev-BlogTutorial)**, but i will warn you that it is not organized by part, if you find yourself confused looking through the code try going back over the previous parts. 
+<p>
+    The first thing you may notice is that since each
+    level is randomly generated each time you launch
+    the game there is a different starting level,
+    to change this you can seed python's random generator
+    or generate the levels and store them in a text file
+    or constant variable. Another thing is that there is 
+    chance for the player to spawn trapped by insulators,
+    this can be fixed in a number of ways one being to
+    unsure there is a 3x3 area of blank tiles around the
+    player. All the code for each part is on
+    <a href="https://github.com/ThreeFourSeven/IntroToPythonGameDev-BlogTutorial">
+    github</a>, but i will warn you that it is not
+    organized by part, if you find yourself confused
+    looking through the code try going back over the previous parts. 
+</p>

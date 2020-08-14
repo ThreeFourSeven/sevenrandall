@@ -6,11 +6,16 @@ comments: true
 type: Games
 ---
 
-## Intro to Python Game Dev with Pygame Part 3
+<h2 class="bodyHeader">
+Intro to Python Game Dev with Pygame Part 3
+</h2>
 
+<p>
 Lets look at how an Entity Component System can reduce redundant code while making a game. An entity can be considered a character or object in our game, from a wall to a player. Components make up the properties and logic of an entity, this can be done in a number of ways. 
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 class Entity:
     _nextID = 0
     def __init__(self):
@@ -42,11 +47,15 @@ class Component:
     def draw(self, game):
         pass
 
-```
+    </code>
+</pre>
 
+<p>
 The idea is to have every object in our game represented by an entity, with each entity containing a dictionary of components. A component being an abstract class that has a component type and a reference to the entity that stores it. This allows us to add any class that extends component to an entity, which reduces redudant code. Lets say you wanted to make a entity that acted as a spike that would remove any other entity that collided with it. You can make a component that would deal with the collision and removal. So to get an entity to behave as a spike just add the component. This may be difficult to follow or visualize so here are some example components.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Each component has a unique type to prevent an entity from having two of one component 
 class ComponentType:
     Shape_ = 0
@@ -148,11 +157,15 @@ class Shape(Component):
                               self.entity.scale * self.shape_size[1], self.color, True)
         else:
             game.draw_texture(self.entity.position[0], self.entity.position[1], self.texture, True)
-```
+    </code>
+</pre>
 
+<p>
 To allow entities to access each other I choose to use a global dictionary to store active entities. 
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # Global map of all entities 
 ENTITIES = {}
 # Global list to contain entity ids of entities that should be removed
@@ -190,11 +203,15 @@ def draw(self):
     # Draw all entities
      for entity in ENTITIES.values():
         entity.draw(self)
-```
+    </code>
+</pre>
 
+<p>
 If you are confused and have no idea how any of this will make life easier thats okay, I urge you to bare with me and look at this example. Lets say you wanted to clone a mobile game about a bird that tries to not fall off the map or run into green poles. Then we can make a pole and bird entity that each contain their own logic.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 DISPLAY_WIDTH = 1600
 DISPLAY_HEIGHT = 900
 
@@ -233,11 +250,15 @@ for pole_a in ENTITIES.values():
         if pole_a.id != pole_b.id:
             pole_a.components[ComponentType.Shape_].ignore(pole_b)
 
-```
+    </code>
+</pre>
 
+<p>
 So the poles are being added in the right locations and drifting to the left. Time to make a bird.
+</p>
 
-```python
+<pre class="prettyprint codeBlock">
+    <code class="language-python">
 # ComponentType
 JumpController_ = 3
 
@@ -269,6 +290,21 @@ bird.add_component(Drift([0, 1]))
 bird.add_component(JumpController(1, 75))
 bird.add_component(Shape(ShapeType.Circle_, [32], pygame.Color(0xff0000ff)))
 add_entity(bird)
-```
+    </code>
+</pre>
 
-While this is only a simple game the idea doesn't change as more complexity is added. Instead of copying and pasting sections of code, just make a component and then add it to whatever entity should have that functionality. Another example would be for a game that has many different animals, each of these animals if programmed as seperate object would have almost the same code. It is likely that most programmers would first opt to try an object hierarchy, with animal as the base class, and each type of animal would extend the base class. This method works until you make multiple variants of the same animal, for example a deer would have the same behavior as a moose. In the heirarchal modal, you would need a class for each animal, but in a component model, you only need a component for each behavior. **[Next part](https://threefourseven.github.io/sevenrandall//2020/05/27/intro-to-python-game-dev-p4)** will cover making a game with this system.
+<p>
+While this is only a simple game the idea doesn't change as more complexity
+is added. Instead of copying and pasting sections of code, just make a component
+and then add it to whatever entity should have that functionality. Another example
+would be for a game that has many different animals, each of these animals if
+programmed as seperate object would have almost the same code. It is likely
+that most programmers would first opt to try an object hierarchy, with animal
+as the base class, and each type of animal would extend the base class.
+This method works until you make multiple variants of the same animal,
+for example a deer would have the same behavior as a moose. In the 
+heirarchal modal, you would need a class for each animal, but in a component 
+model, you only need a component for each behavior. 
+<a href="https://threefourseven.github.io/sevenrandall//2020/05/27/intro-to-python-game-dev-p4">
+Next part</a> will cover making a game with this system.
+</p>
