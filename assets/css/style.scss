@@ -74,20 +74,21 @@ ul li {
 }
 
 .text-block {
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -100%);
     background-color: black;
     color: white;
-    max-width: 45%;
+    min-width: 45%;
 }
 
 @media (max-width:960px) {
     .ImageGridImg {
-        width: 65%;
-        height: 65%;
+        width: 75%;
+        height: 75%;
     }
     .text-block {
-        max-width: 65%;
+        min-width: 75%;
     }
 }
 
