@@ -55,9 +55,15 @@ ul li {
     opacity: 1.0;
 }
 
+.ImageGridImg {
+    width: 45%;
+    height: 45%;
+}
+
 @media (max-width:960px) {
     .ImageGridImg {
         width: 65%;
+        height: 65%;
     }
 }
 
