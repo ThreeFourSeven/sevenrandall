@@ -3,9 +3,20 @@
 
 @import "{{ site.theme }}";
 
+.bodyHeader {
+    text-align: center;
+}
+
+.bodyItem {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50vw;
+}
+
 p {
     margin-left: 5vw;
     width: 90vw;  
+    text-align: left;
 }
 
 .navbar {
@@ -17,6 +28,7 @@ p {
 }
 
 ul li {
+    margin: auto;
     list-style: none;
 }
 
