@@ -73,10 +73,21 @@ ul li {
     height: 45%;
 }
 
+.text-block {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    color: white;
+    max-width: 45%;
+}
+
 @media (max-width:960px) {
     .ImageGridImg {
         width: 65%;
         height: 65%;
+    }
+    .text-block {
+        max-width: 65%;
     }
 }
 
@@ -126,13 +137,6 @@ ul li {
     columns: 1;
     -webkit-columns: 1;
     -moz-columns: 1;
-}
-
-.text-block {
-    bottom: 20px;
-    background-color: black;
-    color: white;
-    width: 125%;
 }
 
 img {
