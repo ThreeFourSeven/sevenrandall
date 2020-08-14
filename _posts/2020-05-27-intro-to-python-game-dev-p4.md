@@ -253,6 +253,6 @@ if fly.sparkCount >= SparkCounter.count:
     create_world()
 ```
 
-![Screenshot of gameplay](/assets/images/sparky_fly.PNG)
+![Screenshot of gameplay](../assets/images/sparky_fly.PNG)
 
 The first thing you may notice is that since each level is randomly generated each time you launch the game there is a different starting level, to fix this you can seed python's random generator or generate the levels and store them in a text file or constant variable. Another thing is that there is chance for the player to spawn trapped by insulators, this can be fixed in a number of ways one being to unsure there is a 3x3 area of blank tiles around the player. All the code for each part is on **[github](https://github.com/ThreeFourSeven/IntroToPythonGameDev-BlogTutorial)**, but i will warn you that it is not organized by part, if you find yourself confused looking through the code try going back over the previous parts. 

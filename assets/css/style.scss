@@ -3,6 +3,11 @@
 
 @import "{{ site.theme }}";
 
+p {
+    margin-left: 5vw;
+    width: 90vw;  
+}
+
 .navbar {
     font-size: 150%;
 }
@@ -15,26 +20,18 @@ ul li {
     list-style: none;
 }
 
-a {
-    color: #303030;
-}
-
-h1 h2 h3 h4 h5 h6 {
-    color: #303030;
-}
-
-.hlist {
+.headerList {
     list-style: none;
-    columns: 3;
-    -webkit-columns: 3;
-    -moz-columns: 3;
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
 }
 
-.clist {
+.footerList {
     list-style: none;
-    columns: 4;
-    -webkit-columns: 4;
-    -moz-columns: 4;
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
 }
 
 .imageGrid {
@@ -45,6 +42,7 @@ h1 h2 h3 h4 h5 h6 {
 }
 
 .selectable {
+    text-align: center;
     transition: .5s ease-out;
     filter: brightness(100%);
 }
@@ -53,16 +51,69 @@ h1 h2 h3 h4 h5 h6 {
     filter: brightness(75%);
 }
 
+.selectable:hover > .text-block {
+    opacity: 1.0;
+}
+
+@media (max-width:960px) {
+    .ImageGridImg {
+        width: 65%;
+    }
+}
+
+@media (max-width:500px) {
+    .footerList {
+        columns: 3;
+        -webkit-columns: 3;
+        -moz-columns: 3;
+    }
+}
+
+@media (max-width:400px) {
+    .imageGrid {
+        display: grid;
+        grid-gap: 15px;
+        grid-template-rows: repeat(auto, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (max-width:300px) {
+    .footerList {
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+    }
+}
+
+@media (max-width:280px) {
+    .headerList {
+        columns: 1;
+        -webkit-columns: 1;
+        -moz-columns: 1;
+    }
+}
+
+@media (max-width:250px) {
+    .footerList {
+        columns: 1;
+        -webkit-columns: 1;
+        -moz-columns: 1;
+    }
+}
+
+.clist {
+    list-style: none;
+    columns: 1;
+    -webkit-columns: 1;
+    -moz-columns: 1;
+}
+
 .text-block {
     position: absolute;
     bottom: 20px;
     background-color: black;
     color: white;
-    padding-left: 20px;
-    padding-right: 20px;
-    opacity: 0;
-}
-
-.selectable:hover > .text-block {
-    opacity: 1.0;
+    padding-left: 5vw;
+    padding-right: 5vw;
 }

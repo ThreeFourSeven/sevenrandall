@@ -3,8 +3,13 @@ layout: default
 title: Blog
 types: [Games, Graphics, MachineLearning, Other]
 ---
-<ul class="clist">
+<div class="imageGrid">
     {% for type in page.types %}
-    <li><a href="/sevenrandall/{{type}}">{{type}}</a></li>
+    <div class="selectable" style="position: relative;">
+        <a href="/sevenrandall/{{type}}">
+            <img class="ImageGridImg" src="../assets/images/{{type}}Logo.jpg">
+        </a>
+        <div class="text-block">{{type}}</div>
+    </div>
     {% endfor %}
-</ul>
+</div>
