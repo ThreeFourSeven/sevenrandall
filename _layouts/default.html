@@ -12,15 +12,19 @@
 				return check;
 			})();
 			var embedUnityGame = function(targetElementId, name, altStill) {
-				if(!isMobileOrTablet) 
+				let demoStyle = "width: 75vw; margin-left: auto; margin-right: auto;";
+				if(!isMobileOrTablet) {
         			var gameInstance = UnityLoader.instantiate(targetElementId, "../assets/unity/"+name+"/Build/WebBuild.json", {onProgress: UnityProgress});
-				else {
-					var noGameInstance = document.getElementById("gameContainer")
-					noGameInstance.textContent = "Unable to load Unity WebGL build.";
+					var divInstance = document.getElementById("gameContainer");
+					divInstance.style = demoStyle;
+
+				} else {
+					var noGameInstance = document.getElementById("gameContainer");
+					noGameInstance.textContent = "Demo is not currently supported on your device.";
 					noGameInstance.style = "text-align: center; color: red;";
 					var still = document.createElement("img");
 					still.src = "../assets/images/"+altStill;
-					still.style = "width: 90vw; margin: 5vw;";
+					still.style = demoStyle;
 					noGameInstance.appendChild(still);
 				}
 			};
