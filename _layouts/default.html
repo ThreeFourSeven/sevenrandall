@@ -25,6 +25,7 @@
 				let demoStyle = "width: 75%; height:100%; margin-left: auto; margin-right: auto;";
 				if(isWebGLSupported) {
 					var path = "../assets/unity/"+name+(isMobileOrTablet?"_mobile":"")+"/Build/WebBuild.json";
+					UnityLoader.compatibilityCheck=function(e,t,r){t();};
 					var gameInstance = UnityLoader.instantiate(targetElementId,path, {onProgress: UnityProgress});
 					var divInstance = document.getElementById("gameContainer");
 					divInstance.style = demoStyle;
