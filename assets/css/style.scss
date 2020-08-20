@@ -2,6 +2,14 @@
 ---
 
 @import "{{ site.theme }}";
+.profile {
+    display: inline;
+    border-radius: 50%;
+    max-height: 2em;
+    transform: translateY(1em);
+    margin-left: 1em;
+    margin-right: 1em;
+}
 
 .bodyHeader {
     text-align: center;
