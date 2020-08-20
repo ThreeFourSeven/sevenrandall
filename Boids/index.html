@@ -32,10 +32,26 @@ title: Boids Demo
 
 <h2 class="bodyHeader">Controls</h2>
 
-<ul class="bodyItem">
-    <li>> Hold right click to move the apple</li>
-    <li>> Press space to spawn a boid at the cursor's position</li>
+
+<ul id="controls" class="bodyItem">
+    
 </ul>
+
+<script>
+    var controls = document.getElementById("controls");
+    var addControl = txt => {
+        var controlText = document.createElement("li");
+        controlText.innerText = "> "+txt;
+        controls.appendChild(controlText);
+    };
+    if(isMobileOrTablet) {
+        addControl("Tap screen to move the target");
+        addControl("Tap the screen with two fingers to spawn more boids");
+    } else {
+        addControl("Left click the screen to move the target");
+        addControl("Press space to spawn more boids")
+    }
+</script>
 
 <script src="../assets/unity/boids/TemplateData/UnityProgress.js"></script>
 <script src="../assets/unity/boids/Build/UnityLoader.js"></script>
